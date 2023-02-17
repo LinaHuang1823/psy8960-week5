@@ -10,3 +10,9 @@ Bdata_tbl <- read_delim("../data/week5/Bparticipants.dat", delim = "\t",col_name
 Bnotes_tbl <- read_delim("../data/week5/Bnotes.txt", delim = "\t")
 
 #Data Cleaning
+Aclean_tbl <- Adata_tbl %>%
+  separate(qs, into = paste0("q", 1:5), sep = "-") %>%
+  mutate(datadate = as.POSIXct(datadate, format="%b %d %Y, %H:%M:%S")) %>%
+  mutate(across(paste0("q", 1:5), as.integer))%>%
+  left_join(Anotes_tbl, by = "parnum") %>%
+  filter(is.na(notes))
